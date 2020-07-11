@@ -5,31 +5,47 @@ Page({
    * 页面的初始数据
    */
   data: {
-    product: {
-      id: 2,
-      image: 'https://product-1256088332.cos.ap-guangzhou.myqcloud.com/product2.jpg',
-      name: 'Guitar',
-      price: 480.50,
-      source: 'SWEDEN'
-    },
+   
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: "Loading...",
+    })
+
     wx.cloud.callFunction({
-      name: "add",
+      name: 'productDetail',
       data: {
-        a: 1,
-        b: 2,
+        id: options.id
       },
-      success(res){
-        console.log(res.result)
+    }).then(result => {
+
+      wx.hideLoading()
+      const data = result.result
+
+      if (data) {
+        this.setData({
+          product: data
+        })
+      } else {
+        setTimeout(() => {
+          wx.navigateBack()
+        }, 2000)
       }
+
+    }).catch(err => {
+      console.error(err)
+      wx.hideLoading()
+
+      setTimeout(() => {
+        wx.navigateBack()
+      }, 2000)
     })
   },
-
+  
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
