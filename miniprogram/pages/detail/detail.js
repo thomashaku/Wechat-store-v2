@@ -1,4 +1,7 @@
 // pages/detail/detail.js
+const db = require("../../utils/db.js")
+const util = require("../../utils/util.js")
+
 Page({
 
   /**
@@ -12,19 +15,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getProductDetail(options.id)
+  },
+
+  getProductDetail(id) {
     wx.showLoading({
       title: "Loading...",
     })
 
-    wx.cloud.callFunction({
-      name: 'productDetail',
-      data: {
-        id: options.id
-      },
-    }).then(result => {
+    db.getProductDetail(id).then(result => {
 
       wx.hideLoading()
       const data = result.result
+      data.price = util.formatPrice(data.price) // 2 digits
 
       if (data) {
         this.setData({
@@ -33,7 +36,7 @@ Page({
       } else {
         setTimeout(() => {
           wx.navigateBack()
-        }, 2000)
+        }, 7000)
       }
 
     }).catch(err => {
@@ -42,7 +45,7 @@ Page({
 
       setTimeout(() => {
         wx.navigateBack()
-      }, 2000)
+      }, 7000)
     })
   },
   
