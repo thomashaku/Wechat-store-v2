@@ -3,7 +3,7 @@
 
 
 <view wx:if="{{!userInfo}}">
-<!-- IFFFFFFFF -->
+<!-- user hasn't logged in -->
   <view class="login-card">
     <view class="login-head"></view>
     <view class="login-info">
@@ -15,5 +15,20 @@
 </view>
 
 <view class="user-card" wx:else>
-<!-- ELSEEEEEE -->
+<!-- user has logged in -->
+<view class="user-info">
+    <image class="user-head" src="{{userInfo.avatarUrl}}"></image>
+    <view class="user-name">{{userInfo.nickName}}</view>
+  </view>
+  <view class="user-split"></view>
+  <view class="user-options">
+    <view class="option" bindtap="onTapAddress">
+      <view class="option-title">Your Addresses</view>
+      <image class="option-arrow" src="/images/grey-arrow.png"></image>
+    </view>
+    <view class="option" bindtap="onTapService">
+      <view class="option-title">Contact Customer Service</view>
+      <image class="option-arrow" src="/images/grey-arrow.png"></image>
+    </view>
+  </view>
 </view>
